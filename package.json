@@ -1,0 +1,18 @@
+{
+    "name": "stomp2express",
+    "version": "0.0.0",
+    "description": "Stompify your Express App",
+    "main": "stomp2express.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:MailOnline/stomp2express.git"
+    },
+    "author": "",
+    "license": "Private",
+    "dependencies": {
+        "stompit": "^0.18.1"
+    }
+}
