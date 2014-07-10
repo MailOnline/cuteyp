@@ -1,12 +1,12 @@
 var Response = require('./lib/response')
     ,stompit = require('stompit');
-    ;
-//socketio = require('socket.io');
 
-//var app = express();
-//app.listen(8080);
-module.exports = function(app, stompOpts, path) {
 
+module.exports = function(app, stompOpts, path, filterFn) {
+
+    if (!stompOpts) {
+        return console.log("No stomp opts provided, not connecting");
+    }
     var connections = new stompit.ConnectFailover([stompOpts]);
 
     var channel = new stompit.ChannelFactory(connections);
@@ -14,20 +14,27 @@ module.exports = function(app, stompOpts, path) {
     channel.subscribe(path, function(error, message) {
 
         if (error) {
-            console.log('subscribe error ' + error.message);
+            console.error('subscribe error ' + error.message);
             return;
         }
 
         message.readString('utf8', function(error, body) {
 
             if (error) {
-                console.log('read message error ' + error.message);
+                console.error('read message error ' + error.message);
                 return;
             }
 
             console.log('received message: ' + body);
             var parsed = JSON.parse(body);
             var replyTo = parsed.replyTo;
+
+            if (filterFn) {
+                if (!filterFn(parsed)) {
+                    console.error("Ignoring message, failed filter");
+                    return;
+                }
+            }
 
             var req = {
                 headers: parsed.headers,
@@ -47,4 +54,4 @@ module.exports = function(app, stompOpts, path) {
             message.ack();
         });
     });
-}
+};
