@@ -14,7 +14,9 @@
   "license": "Private",
   "dependencies": {
     "express": "^4.5.1",
+    "hiredis": "^0.1.17",
     "lodash": "^2.4.1",
+    "redis": "^0.11.0",
     "stompit": "^0.18.1"
   }
 }
