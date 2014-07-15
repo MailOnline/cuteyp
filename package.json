@@ -1,8 +1,8 @@
 {
-  "name": "stomp2express",
+  "name": "cuteyp",
   "version": "0.0.0",
   "description": "Stompify your Express App",
-  "main": "stomp2express.js",
+  "main": "cuteyp.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
