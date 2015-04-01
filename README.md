@@ -1,4 +1,4 @@
-CutyP    ( Queue <-> Http )
+CuteyP    ( Queue <-> Http )
 ===========================
 
 Simple mechanism for converting Express Http to a queue and back.
