@@ -38,7 +38,7 @@ var app = express();
 app.get('/foo/bar', function() { ...});
 
 var queue = cuteyp.redis(redisConfig); //OR = cuteyp.stomp(stompitConfig);
-cuteyp.toHttp(app, queue, '/foo' );
+cuteyp.toHttp(app, queue, 'queue.request.foo' );
 
 Explanation
 ===========
