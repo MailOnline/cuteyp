@@ -27,7 +27,7 @@ cuteyp.fromHttp(app, queue, {
     ttl: 30000, // depends on implementation
     mappingFn: function(req) { // 
         var service = req.path.split('/')[1];
-        return 'queue.request' + '.' + service;
+        return 'queue.request.' + service;
     }
 });
 
