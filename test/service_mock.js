@@ -2,7 +2,8 @@
 
 var express = require('express')
     , cuteyp = require('../cuteyp')
-    , bodyParser = require('body-parser');
+    , bodyParser = require('body-parser')
+    , fs = require('fs');
 
 module.exports = function(serviceName) {
     var app = express();
@@ -13,6 +14,7 @@ module.exports = function(serviceName) {
     app.use(bodyParser());
     app.get(url, handler);
     app.post(url, handler);
+    app.get('/' + serviceName + '/image', getImage);
 
     var queue = require('./queue_mock')();
     cuteyp.toHttp(app, queue, 'queue.request.' + serviceName);
@@ -31,5 +33,14 @@ module.exports = function(serviceName) {
         // console.log('service:', data);
         res.set('Content-Type', 'application/json');
         res.send(JSON.stringify(data));
+    }
+
+
+    function getImage(req, res) {
+        fs.readFile(__dirname + '/logo.gif', function (err, imgData) {
+            if (err) return res.send(500);
+            res.set('Content-Type', 'application/image');
+            res.send(imgData);
+        });
     }
 }

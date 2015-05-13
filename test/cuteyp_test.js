@@ -38,6 +38,19 @@ describe('cuteyp', function() {
     });
 
 
+    it('should pass image', function (done) {
+        test(proxy)
+        .get('/my_service1/image')
+        .expect('Content-Type', /image/)
+        .expect(200)
+        .end(function (err, res) {
+            console.log('end')
+            // console.log(res);
+            done(err);
+        });
+    });
+
+
     function testGET(serviceName, service, otherService) {
         return test(proxy)
         .get('/' + serviceName + '/test')
