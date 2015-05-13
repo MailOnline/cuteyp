@@ -4,7 +4,8 @@
 var proxy = require('./proxy_mock')
     , makeService = require('./service_mock')
     , test = require('supertest')
-    , assert = require('assert');
+    , assert = require('assert')
+    , fs = require('fs');
 
 
 describe('cuteyp', function() {
@@ -44,8 +45,9 @@ describe('cuteyp', function() {
         .expect('Content-Type', /image/)
         .expect(200)
         .end(function (err, res) {
-            console.log('end')
-            // console.log(res);
+            assert(!err);
+            var imgData = fs.readFileSync(__dirname + '/logo.gif').toString();
+            assert.equal(imgData, res.text);
             done(err);
         });
     });
