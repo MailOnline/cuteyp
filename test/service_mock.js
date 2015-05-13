@@ -37,10 +37,8 @@ module.exports = function(serviceName) {
 
 
     function getImage(req, res) {
-        fs.readFile(__dirname + '/logo.gif', function (err, imgData) {
-            if (err) return res.send(500);
-            res.set('Content-Type', 'application/image');
-            res.send(imgData);
-        });
+        res.set('Content-Type', 'image/gif');
+        fs.createReadStream(__dirname + '/logo.gif')
+        .pipe(res);
     }
 }

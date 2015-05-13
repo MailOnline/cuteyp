@@ -46,8 +46,8 @@ describe('cuteyp', function() {
         .expect(200)
         .end(function (err, res) {
             assert(!err);
-            var imgData = fs.readFileSync(__dirname + '/logo.gif').toString();
-            assert.equal(imgData, res.text);
+            var imgData = fs.readFileSync(__dirname + '/logo.gif');
+            assert.deepEqual(imgData, res.body);
             done(err);
         });
     });
