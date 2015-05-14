@@ -9,11 +9,9 @@ module.exports = function(serviceName) {
     var app = express();
     app._requests = [];
 
-    var url = '/' + serviceName + '/test';
-
     app.use(bodyParser());
-    app.get(url, handler);
-    app.post(url, handler);
+    app.get('/' + serviceName + '/test', handler);
+    app.post('/' + serviceName + '/test', handler);
     app.get('/' + serviceName + '/image', getImage);
 
     var queue = require('./queue_mock')();
