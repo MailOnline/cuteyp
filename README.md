@@ -3,6 +3,11 @@ CuteyP    ( Queue <-> Http )
 
 Simple mechanism for converting Express Http to a queue and back.
 
+KNOWN ISSUES
+============
+Currently multibyte only works reliably with Express 3 and formidable.
+Streaming only works from server->client
+
 INSTALL
 =======
 npm install  cuteyp
