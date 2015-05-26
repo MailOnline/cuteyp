@@ -1,6 +1,6 @@
 {
   "name": "cuteyp",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Stompify your Express App",
   "main": "cuteyp.js",
   "scripts": {
@@ -13,16 +13,17 @@
   "author": "",
   "license": "Private",
   "dependencies": {
-    "express": "^4.12.3",
+    "express": "~3.4.4",
     "lodash": "^2.4.1",
     "redis": "^0.11.0",
     "stompit": "^0.18.1"
   },
   "devDependencies": {
-    "body": "^5.0.0",
     "body-parser": "^1.12.4",
+    "formidable": "^1.0.17",
     "mocha": "^2.2.4",
     "mockery": "^1.4.0",
+    "multiparty": "^4.1.2",
     "redis-mock": "^0.4.9",
     "supertest": "^1.0.0"
   }

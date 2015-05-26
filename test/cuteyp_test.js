@@ -9,51 +9,75 @@ var proxy = require('./proxy_mock')
 
 
 describe('cuteyp', function() {
+    this.timeout(5000);
+
     var service1 = makeService('my_service1')
         , service2 = makeService('my_service2');
 
     beforeEach(function() {
         service1._requests = [];
         service2._requests = [];
+        delete service1._expectBody;
+        delete service2._expectBody;
     })
 
     describe('GET should send to correct service', function() {
         it('service 1', function (done) {
-            testGET('my_service1', service1, service2).end(done);
+            testGET(service1, service2).end(done);
         });
 
         it('service 2', function (done) {
-            testGET('my_service2', service2, service1).end(done);
+            testGET(service2, service1).end(done);
         });
     });
 
 
     describe('POST should send to correct service', function() {
         it('service 1', function (done) {
-            testPOST('my_service1', service1, service2).end(done);
+            testPOST(service1, service2).end(done);
         });
 
         it('service 2', function (done) {
-            testPOST('my_service2', service2, service1).end(done);
+            testPOST(service2, service1).end(done);
         });
     });
 
 
-    it('should pass image', function (done) {
-        test(proxy)
-        .get('/my_service1/image')
-        .expect('Content-Type', /image/)
-        .expect(200)
-        .end(function (err, res) {
-            assert(!err);
-            var imgData = fs.readFileSync(__dirname + '/logo.gif');
-            assert.deepEqual(imgData, res.body);
-            done(err);
-        });
+    it('should get image', function (done) {
+        testGetImage(service1, 'logo.gif', done);
     });
 
 
-    function testGET(serviceName, service, otherService) {
+    it('should get video (big file)', function (done) {
+        testGetImage(service1, 'video.mov', done);
+    });
+
+
+    it('should send unicode characters', function (done) {
+        testPOST(service1, service2, 'Hello - ♤♧♡♢☆😏\ud83d\ude0f').end(done);
+    });
+
+
+    it('should upload image', function (done) {
+        testPostImage(service1, 'logo.gif', done);
+    });
+
+
+    it('should upload video', function (done) {
+        testPostImage(service1, 'video.mov', done);
+    });
+
+
+    it('should upload image directly', function (done) {
+        var service3 = makeService('my_service3', { useCuteyp: false });
+        testPostImage(service3, 'logo.gif', done);
+    });
+
+
+    function testGET(service, otherService) {
+        var serviceName = service._serviceName;
+        service._expectBody = {};
+
         return test(proxy)
         .get('/' + serviceName + '/test')
         .expect('Content-Type', /json/)
@@ -72,11 +96,15 @@ describe('cuteyp', function() {
     }
 
 
-    function testPOST(serviceName, service, otherService) {
+    function testPOST(service, otherService, testText) {
+        var testText = testText || 'test';
+        var serviceName = service._serviceName;
+        service._expectBody = { test: testText };
+
         return test(proxy)
         .post('/' + serviceName + '/test')
         .set('Content-Type', 'application/json')
-        .send({ test: 'test' })
+        .send({ test: testText })
         .expect('Content-Type', /json/)
         .expect(200)
         .expect(function (res) {
@@ -84,12 +112,40 @@ describe('cuteyp', function() {
                 service: serviceName,
                 url: '/' + serviceName + '/test',
                 method: 'POST',
-                body: { test: 'test' }
+                body: { test: testText }
             };
 
             assert.deepEqual(res.body, expected);
             assert.deepEqual(service._requests, [ expected ]);
             assert.deepEqual(otherService._requests, [ ]);
+        });
+    }
+
+
+    function testGetImage(service, fileName, done) {
+        test(proxy)
+        .get('/' + service._serviceName + '/image/' + fileName)
+        .expect('Content-Type', /image/)
+        .expect(200)
+        .end(function (err, res) {
+            assert(!err);
+            var imgData = fs.readFileSync(__dirname + '/'  + fileName);
+            assert.deepEqual(imgData, res.body);
+            done(err);
+        });
+    }
+
+
+    function testPostImage(service, fileName, done) {
+        test(proxy)
+        .post('/' + service._serviceName + '/image/' + fileName)
+        .field('Content-Type', 'multipart/form-data')
+        .field('name', 'test')
+        .attach('logo', __dirname + '/' + fileName)
+        .expect(200)
+        .end(function (err, res) {
+            if (err) console.log(err);
+            done(err)
         });
     }
 });
