@@ -2,6 +2,7 @@
 
 
 var proxy = require('./proxy_mock')
+    , asyncProxy = require('./proxy_async_mock')
     , makeService = require('./service_mock')
     , test = require('supertest')
     , assert = require('assert')
@@ -23,22 +24,38 @@ describe('cuteyp', function() {
 
     describe('GET should send to correct service', function() {
         it('service 1', function (done) {
-            testGET(service1, service2).end(done);
+            testGET(proxy, service1, service2).end(done);
         });
 
         it('service 2', function (done) {
-            testGET(service2, service1).end(done);
+            testGET(proxy, service2, service1).end(done);
+        });
+
+        it('service 1 with async mapping', function (done) {
+            testGET(asyncProxy, service1, service2).end(done);
+        });
+
+        it('service 2 with async mapping', function (done) {
+            testGET(asyncProxy, service2, service1).end(done);
         });
     });
 
 
     describe('POST should send to correct service', function() {
         it('service 1', function (done) {
-            testPOST(service1, service2).end(done);
+            testPOST(proxy, service1, service2).end(done);
         });
 
         it('service 2', function (done) {
-            testPOST(service2, service1).end(done);
+            testPOST(proxy, service2, service1).end(done);
+        });
+
+        it('service 1 with async mapping', function (done) {
+            testPOST(asyncProxy, service1, service2).end(done);
+        });
+
+        it('service 2 with async mapping', function (done) {
+            testPOST(asyncProxy, service2, service1).end(done);
         });
     });
 
@@ -54,7 +71,7 @@ describe('cuteyp', function() {
 
 
     it('should send unicode characters', function (done) {
-        testPOST(service1, service2, 'Hello - ♤♧♡♢☆😏\ud83d\ude0f').end(done);
+        testPOST(proxy, service1, service2, 'Hello - ♤♧♡♢☆😏\ud83d\ude0f').end(done);
     });
 
 
@@ -74,7 +91,7 @@ describe('cuteyp', function() {
     });
 
 
-    function testGET(service, otherService) {
+    function testGET(proxy, service, otherService) {
         var serviceName = service._serviceName;
         service._expectBody = {};
 
@@ -96,7 +113,7 @@ describe('cuteyp', function() {
     }
 
 
-    function testPOST(service, otherService, testText) {
+    function testPOST(proxy, service, otherService, testText) {
         var testText = testText || 'test';
         var serviceName = service._serviceName;
         service._expectBody = { test: testText };

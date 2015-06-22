@@ -17,11 +17,17 @@ Example Usage
 
 Common dependencies
 -------------------
+
+```
 var express = require('express');
 var cuteyp = require('cuteyp');
+```
+
 
 Example front end (FE) server (Http -> Queue)
 ==============================================
+
+```
 var app = express();
 app.listen(8080);
 
@@ -35,6 +41,10 @@ cuteyp.fromHttp(app, queue, {
         return 'queue.request.' + service;
     }
 });
+```
+
+mappingFn can be asynchronous with callback as a second parameter. Callback should be called with `err` and `destination`.
+
 
 Example backend service (BE) (Queue -> Http)
 =============================================
