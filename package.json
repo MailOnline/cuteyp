@@ -1,6 +1,6 @@
 {
   "name": "cuteyp",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Stompify your Express App",
   "main": "cuteyp.js",
   "scripts": {

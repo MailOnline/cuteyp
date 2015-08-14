@@ -3,6 +3,8 @@ CuteyP    ( Queue <-> Http )
 
 Simple mechanism for converting Express Http to a queue and back.
 
+[![Build Status](https://travis-ci.org/MailOnline/cuteyp.svg?branch=master)](https://travis-ci.org/MailOnline/cuteyp)
+
 KNOWN ISSUES
 ============
 Currently multibyte only works reliably with Express 3 and formidable.
