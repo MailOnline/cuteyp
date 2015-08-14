@@ -43,6 +43,8 @@ cuteyp.fromHttp(app, queue, {
 });
 ```
 
+`redisConfig` may include `host`, `port` and any other options supported by [node redis](https://github.com/NodeRedis/node_redis) client.
+
 mappingFn can be asynchronous with callback as a second parameter. Callback should be called with `err` and `destination`.
 
 
