@@ -27,7 +27,7 @@ function queueMock() {
     return queue;
 }
 
-util.inherits(Subscriber, EventEmitter)
+util.inherits(Subscriber, EventEmitter);
 
 function Subscriber(subscriptionPath) {
     var self = this;
