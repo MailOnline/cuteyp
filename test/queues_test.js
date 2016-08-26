@@ -1,5 +1,7 @@
 'use strict';
 
+/* eslint-env browser, commonjs, node, mocha */
+
 var assert = require('assert');
 
 var mockery = require('mockery')
@@ -45,7 +47,7 @@ describe('Queues', function() {
         });
 
         it.skip('subscriber method creates Subscriber object for passed path', function() {
-            var subscriber = queue.subscriber('/my_path');
+            queue.subscriber('/my_path');
         });
     }
 });
