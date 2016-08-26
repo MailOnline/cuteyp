@@ -22,7 +22,7 @@ module.exports = function(serviceName, opts) {
     app.post('/' + serviceName + '/image/:image', postImage);
 
     var queue = require('./queue_mock')();
-    it (opts.useCuteyp !== false)
+    if (opts.useCuteyp !== false)
         cuteyp.toHttp(app, queue, 'queue.request.' + serviceName);
 
     return app;
@@ -68,4 +68,4 @@ module.exports = function(serviceName, opts) {
             }            
         });
     }
-}
+};

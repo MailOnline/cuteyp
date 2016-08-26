@@ -1,5 +1,6 @@
 'use strict';
 
+/* eslint-env browser, commonjs, node, mocha */
 
 var proxy = require('./proxy_mock')
     , asyncProxy = require('./proxy_async_mock')
@@ -20,7 +21,7 @@ describe('cuteyp', function() {
         service2._requests = [];
         delete service1._expectBody;
         delete service2._expectBody;
-    })
+    });
 
     describe('GET should send to correct service', function() {
         it('service 1', function (done) {
@@ -87,7 +88,7 @@ describe('cuteyp', function() {
 
     it('should upload image directly', function (done) {
         var service3 = makeService('my_service3', { useCuteyp: false });
-        testPostImage(service3, 'logo.gif', done);
+        testPostImage(service3, 'logo.gif', done, service3);
     });
 
 
@@ -153,8 +154,9 @@ describe('cuteyp', function() {
     }
 
 
-    function testPostImage(service, fileName, done) {
-        test(proxy)
+    function testPostImage(service, fileName, done, avoidProxy) {
+        console.log('/' + service._serviceName + '/image/' + fileName);
+        test(avoidProxy ? service : proxy)
         .post('/' + service._serviceName + '/image/' + fileName)
         .field('Content-Type', 'multipart/form-data')
         .field('name', 'test')
@@ -162,7 +164,7 @@ describe('cuteyp', function() {
         .expect(200)
         .end(function (err, res) {
             if (err) console.log(err);
-            done(err)
+            done(err);
         });
     }
 });
