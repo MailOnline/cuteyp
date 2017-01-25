@@ -65,7 +65,7 @@ module.exports = function(serviceName, opts) {
                 res.send(200, 'OK');
             } catch(e) {
                 res.send(500, e.message);
-            }            
+            }
         });
     }
 };
