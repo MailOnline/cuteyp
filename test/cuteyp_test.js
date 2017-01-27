@@ -1,7 +1,5 @@
 'use strict';
 
-/* eslint-env browser, commonjs, node, mocha */
-
 var proxy = require('./proxy_mock')
     , asyncProxy = require('./proxy_async_mock')
     , makeService = require('./service_mock')

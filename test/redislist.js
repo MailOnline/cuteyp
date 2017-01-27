@@ -1,7 +1,5 @@
 'use strict';
 
-/* eslint-env browser, commonjs, node, mocha */
-
 var assert = require('assert'),
     mockery = require('mockery');
 
