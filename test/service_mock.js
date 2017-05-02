@@ -3,7 +3,7 @@
 var express = require('express')
     , cuteyp = require('../cuteyp')
     , bodyParser = require('body-parser')
-    , formidable = require('formidable')
+    , multiparty = require('multiparty')
     , fs = require('fs')
     , assert = require('assert');
 
@@ -52,13 +52,13 @@ module.exports = function(serviceName, opts) {
 
 
     function postImage(req, res) {
-        var form = new formidable.IncomingForm();
+        var form = new multiparty.Form();
         form.parse(req, function (err, fields, files) {
             if (err) return res.send(500, err);
 
             try {
                 assert.equal(fields.name, 'test');
-                var uploadedImgData = fs.readFileSync(files.logo.path);
+                var uploadedImgData = fs.readFileSync(files.logo[0].path);
                 var imgData = fs.readFileSync(__dirname + '/' + req.params.image);
                 assert.deepEqual(uploadedImgData, imgData);
                 res.set('Content-Type', 'text/plain');
