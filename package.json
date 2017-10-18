@@ -16,8 +16,8 @@
   "license": "Private",
   "dependencies": {
     "express": "^3.21.2",
+    "ioredis": "^3.1.4",
     "lodash": "^4.17.4",
-    "redis": "^2.6.5",
     "stompit": "^0.24.0"
   },
   "devDependencies": {
