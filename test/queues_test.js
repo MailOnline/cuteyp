@@ -2,9 +2,16 @@
 
 var assert = require('assert');
 
+const RedisMock = require('ioredis-mock');
+
 var mockery = require('mockery')
     , stompMock = {};
-mockery.registerSubstitute('redis', 'redis-mock');
+
+RedisMock.prototype.brpop = function (subscriptionPath, i, queueFn) {
+    queueFn(undefined, []);
+};
+
+mockery.registerMock('ioredis', RedisMock);
 mockery.registerMock('stompit', stompMock);
 mockery.registerAllowables(['../lib/redis.js', '../lib/redislist.js', '../lib/stomp.js']);
 
