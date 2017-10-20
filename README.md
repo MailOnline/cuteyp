@@ -1,6 +1,8 @@
 CuteyP    ( Queue <-> Http )
 ===========================
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/MailOnline/cuteyp.svg)](https://greenkeeper.io/)
+
 Simple mechanism for converting Express Http to a queue and back.
 
 [![Build Status](https://travis-ci.org/MailOnline/cuteyp.svg?branch=master)](https://travis-ci.org/MailOnline/cuteyp)
