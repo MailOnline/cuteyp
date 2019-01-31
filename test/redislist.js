@@ -3,7 +3,29 @@
 var assert = require('assert'),
     mockery = require('mockery');
 
-mockery.registerSubstitute('redis', 'redis-mock');
+const { inherits } = require('util');
+
+const commands = require('ioredis-mock/lib/commands');
+const commandsCopy = Object.assign({}, commands);
+let subscriber;
+
+class RedisMockExtended {
+    brpop (subscriptionPath, body, queueFn) {
+        queueFn(undefined, [1, 2]);
+    }
+
+    lpush(subscriptionPath, body, queueFn) {
+        queueFn(undefined);
+    }
+}
+
+mockery.registerMock('./commands', commandsCopy);
+
+const RedisMock = require('ioredis-mock');
+
+inherits(RedisMockExtended, RedisMock);
+
+mockery.registerMock('ioredis', RedisMockExtended);
 mockery.registerAllowables(['../lib/redislist.js']);
 
 mockery.enable({ warnOnReplace: true, warnOnUnregistered: false, useCleanCache: true });
@@ -14,8 +36,8 @@ mockery.disable();
 
 describe('Test redislist', function() {
     it('should test pausing redislist subscription', function(done) {
-        var queue = redisList();
-        var subscriber = queue.subscriber('/my_path');
+        const queue = redisList();
+        subscriber = queue.subscriber('/my_path');
         var callCount = 0;
         subscriber.on('message', function() {
             callCount++;
