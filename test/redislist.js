@@ -36,7 +36,7 @@ mockery.disable();
 
 describe('Test redislist', function() {
     it('should test pausing redislist subscription', function(done) {
-        const queue = redisList();
+        const queue = redisList({ host: 'test', port: 'test', retryStrategy: 'test'});
         subscriber = queue.subscriber('/my_path');
         var callCount = 0;
         subscriber.on('message', function() {

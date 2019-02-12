@@ -13,23 +13,18 @@ RedisMock.prototype.brpop = function (subscriptionPath, i, queueFn) {
 
 mockery.registerMock('ioredis', RedisMock);
 mockery.registerMock('stompit', stompMock);
-mockery.registerAllowables(['../lib/redis.js', '../lib/redislist.js', '../lib/stomp.js']);
+mockery.registerAllowables(['../lib/redislist.js', '../lib/stomp.js']);
 
 mockery.enable({ warnOnReplace: true, warnOnUnregistered: false, useCleanCache: true });
 assert.equal(stompMock, require('stompit'), 'stompit mocked');
 
-var redisQueue = require('../lib/redis.js')
-    , redisListQueue = require('../lib/redislist.js')
+var redisListQueue = require('../lib/redislist.js')
     , stompQueue =  require('../lib/stomp.js');
 
 mockery.disable();
 
 
 describe('Queues', function() {
-    describe('redis queue', function() {
-        testQueue(redisQueue);
-    });
-
     describe('redislist queue', function() {
         testQueue(redisListQueue);
     });
@@ -43,7 +38,7 @@ describe('Queues', function() {
         var queue;
 
         before(function() {
-            queue = queueFactory();
+            queue = queueFactory({ host: 'test', port: 'test', retryStrategy: 'test'});
         });
 
         it('defines subscriber and send methods', function() {
