@@ -44,12 +44,12 @@ describe('Test redislist', function() {
         });
 
         queue.send('/my_path', 'm1', function() {
-            setTimeout(function() {
+            process.nextTick(function() {
                 assert.equal(callCount, 1);
                 subscriber.emit('pause');
 
                 queue.send('/my_path', 'm2', function() {
-                    setTimeout(function() {
+                    process.nextTick(function() {
                         assert.equal(callCount, 2);
 
                         queue.send('/my_path', 'm3', function() {
@@ -58,9 +58,9 @@ describe('Test redislist', function() {
                                 done();
                             });
                         });
-                    }, 0);
+                    });
                 });
-            }, 0);
+            });
         });
     });
 });
