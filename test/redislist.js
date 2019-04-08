@@ -11,11 +11,11 @@ let subscriber;
 
 class RedisMockExtended {
     brpop (subscriptionPath, body, queueFn) {
-        queueFn(undefined, [1, 2]);
+        setTimeout(() => queueFn(undefined, [1, 2]), 0);
     }
 
     lpush(subscriptionPath, body, queueFn) {
-        queueFn(undefined);
+        setTimeout(() => queueFn(undefined), 0);
     }
 }
 
