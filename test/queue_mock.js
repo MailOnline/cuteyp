@@ -19,7 +19,7 @@ function queueMock() {
                 var path = typeof headers === 'string' ? headers : headers.destination;
                 if (!path)
                     return console.error('No path provided for sending');
-                transport.emit(path, body);
+                transport.emit(path, JSON.stringify(body));
             }
         };
     }

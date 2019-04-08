@@ -11,11 +11,11 @@ let subscriber;
 
 class RedisMockExtended {
     brpop (subscriptionPath, body, queueFn) {
-        queueFn(undefined, [1, 2]);
+        setTimeout(() => queueFn(undefined, [1, 2]), 0);
     }
 
     lpush(subscriptionPath, body, queueFn) {
-        queueFn(undefined);
+        setTimeout(() => queueFn(undefined), 0);
     }
 }
 
@@ -45,17 +45,23 @@ describe('Test redislist', function() {
 
         queue.send('/my_path', 'm1', function() {
             process.nextTick(function() {
-                assert.equal(callCount, 1);
-                subscriber.emit('pause');
+                Promise.resolve().then(() => {
+                    assert.equal(callCount, 1);
+                    subscriber.emit('pause');
 
-                queue.send('/my_path', 'm2', function() {
-                    process.nextTick(function() {
-                        assert.equal(callCount, 2);
-
-                        queue.send('/my_path', 'm3', function() {
-                            process.nextTick(function() {
+                    queue.send('/my_path', 'm2', function() {
+                        process.nextTick(function() {
+                            Promise.resolve().then(() => {
                                 assert.equal(callCount, 2);
-                                done();
+
+                                queue.send('/my_path', 'm3', function() {
+                                    process.nextTick(function() {
+                                        Promise.resolve().then(() => {
+                                            assert.equal(callCount, 2);
+                                            done();
+                                        });
+                                    });
+                                });
                             });
                         });
                     });
