@@ -15,10 +15,10 @@
   "author": "",
   "license": "Private",
   "dependencies": {
-    "express": "^3.21.2",
-    "ioredis": "^3.1.4",
+    "express": "^4.0.0",
+    "ioredis": "^4.27.8",
     "lodash": "^4.17.4",
-    "stompit": "^0.24.0"
+    "stompit": "^1.0.0"
   },
   "devDependencies": {
     "body-parser": "^1.16.0",
